@@ -54,11 +54,10 @@ add_message_files(
 )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  IRSignal.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -214,3 +213,11 @@ add_dependencies(keyboard_robot_publisher avg_robot_generate_messages_cpp)
 add_executable(keyboard_robot_subscriber src/keyboard_subscriber.cpp)
 target_link_libraries(keyboard_robot_subscriber ${catkin_LIBRARIES})
 add_dependencies(keyboard_robot_subscriber avg_robot_generate_messages_cpp)
+
+add_executable(ir_server src/ir_service.cpp)
+target_link_libraries(ir_server ${catkin_LIBRARIES})
+add_dependencies(ir_server avg_robot_gencpp)
+
+add_executable(ir_client src/ir_client.cpp)
+target_link_libraries(ir_client ${catkin_LIBRARIES})
+add_dependencies(ir_client avg_robot_gencpp)
