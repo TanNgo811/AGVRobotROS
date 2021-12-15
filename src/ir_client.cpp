@@ -18,14 +18,14 @@
      ros::NodeHandle n;
      ros::ServiceClient client = n.serviceClient<avg_robot::IRSignal>("ir_signal");
      avg_robot::IRSignal srv;
-     srv.request.IR_1 = atoll(argv[1]);
-     srv.request.IR_2 = atoll(argv[2]);
-     srv.request.IR_3 = atoll(argv[3]);
-     srv.request.IR_4 = atoll(argv[4]);
-     srv.request.IR_5 = atoll(argv[5]);
+     srv.request.IR_1 = atoi(argv[1]);
+     srv.request.IR_2 = atoi(argv[2]);
+     srv.request.IR_3 = atoi(argv[3]);
+     srv.request.IR_4 = atoi(argv[4]);
+     srv.request.IR_5 = atoi(argv[5]);
      if (client.call(srv))
      {
-       ROS_INFO("Direction: %s", srv.response.direction.c_str());
+       ROS_INFO("Direction: %s", srv.response.state.c_str());
      }
      else
      {

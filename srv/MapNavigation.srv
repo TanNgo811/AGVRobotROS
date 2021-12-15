@@ -1,0 +1,5 @@
+int8 startPoint
+int8 packagePoint
+int8 endPoint
+---
+string navigationArray

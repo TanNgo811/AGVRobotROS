@@ -51,12 +51,16 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   Navigation.msg
+  Distance.msg
+  MotorWarning.msg
+  MotorControl.msg
 )
 
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
   IRSignal.srv
+  MapNavigation.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -104,9 +108,13 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES avg_robot
-#  CATKIN_DEPENDS roscpp rospy std_msgs
+  CATKIN_DEPENDS
+  message_runtime  
+  roscpp 
+  rospy 
+  std_msgs
 #  DEPENDS system_lib
-  CATKIN_DEPENDS message_runtime
+
 )
 
 ###########
@@ -205,7 +213,7 @@ include
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-
+#Keyboard Input
 add_executable(keyboard_robot_publisher src/keyboard_input_publisher.cpp)
 target_link_libraries(keyboard_robot_publisher ${catkin_LIBRARIES})
 add_dependencies(keyboard_robot_publisher avg_robot_generate_messages_cpp)
@@ -214,6 +222,7 @@ add_executable(keyboard_robot_subscriber src/keyboard_subscriber.cpp)
 target_link_libraries(keyboard_robot_subscriber ${catkin_LIBRARIES})
 add_dependencies(keyboard_robot_subscriber avg_robot_generate_messages_cpp)
 
+#IR Signal
 add_executable(ir_server src/ir_service.cpp)
 target_link_libraries(ir_server ${catkin_LIBRARIES})
 add_dependencies(ir_server avg_robot_gencpp)
@@ -221,3 +230,30 @@ add_dependencies(ir_server avg_robot_gencpp)
 add_executable(ir_client src/ir_client.cpp)
 target_link_libraries(ir_client ${catkin_LIBRARIES})
 add_dependencies(ir_client avg_robot_gencpp)
+
+#Path Finder
+add_executable(map_navigation_server src/map_navigation_server.cpp)
+target_link_libraries(map_navigation_server ${catkin_LIBRARIES})
+add_dependencies(map_navigation_server avg_robot_gencpp)
+
+add_executable(map_navigation_client src/map_navigation_client.cpp)
+target_link_libraries(map_navigation_client ${catkin_LIBRARIES})
+add_dependencies(map_navigation_client avg_robot_gencpp)
+
+#Distance Warning
+add_executable(distance_publisher src/distance_publisher.cpp)
+target_link_libraries(distance_publisher ${catkin_LIBRARIES})
+add_dependencies(distance_publisher avg_robot_generate_messages_cpp)
+
+add_executable(distance_warning_subscriber src/distance_warning_subscriber.cpp)
+target_link_libraries(distance_warning_subscriber ${catkin_LIBRARIES})
+add_dependencies(distance_warning_subscriber avg_robot_generate_messages_cpp)
+
+add_executable(distance_motor_status_subscriber src/distance_motor_status_subscriber.cpp)
+target_link_libraries(distance_motor_status_subscriber ${catkin_LIBRARIES})
+add_dependencies(distance_motor_status_subscriber avg_robot_generate_messages_cpp)
+
+#Motor Control
+add_executable(motor_control_subscriber src/motor_subscriber.cpp)
+target_link_libraries(motor_control_subscriber ${catkin_LIBRARIES})
+add_dependencies(motor_control_subscriber avg_robot_generate_messages_cpp)

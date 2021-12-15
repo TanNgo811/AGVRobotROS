@@ -255,6 +255,7 @@ void TeleopRobot::keyLoop()
    
 
     avg_robot::Navigation navi;
+    
     navi.navigation=_navigation;
     if(dirty ==true)
     {

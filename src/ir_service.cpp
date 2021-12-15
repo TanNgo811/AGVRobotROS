@@ -5,21 +5,24 @@
 #include <string.h>
    
 bool avg(avg_robot::IRSignal::Request  &req, avg_robot::IRSignal::Response &res) {
-    ROS_INFO("request: IR_1=%ld, IR_2=%ld, IR_3=%ld, IR_4=%ld, IR_5=%ld", req.IR_1, req.IR_2, req.IR_3, req.IR_4, req.IR_5);
+    ROS_INFO("request: IR_1=%d, IR_2=%d, IR_3=%d, IR_4=%d, IR_5=%d", req.IR_1, req.IR_2, req.IR_3, req.IR_4, req.IR_5);
 
-    if (req.IR_1 == 0 && req.IR_5 == 0 && req.IR_2 == 1 && req.IR_3 == 1 && req.IR_4 == 1) {
-        res.direction = "forward";
-    } else if (req.IR_1 == 1 && req.IR_5 == 1) {
-        res.direction = "forward";
-    } else if (req.IR_1 == 1) {
-        res.direction = "left";
-    } else if (req.IR_5 == 1) {
-        res.direction = "right";
+    if (req.IR_2 && req.IR_3 && req.IR_4) {
+        if (req.IR_1 && req.IR_5) res.state = "Fork/Crossroad";
+        else if (req.IR_1 && !req.IR_5) res.state = "Fork/LeftTurn";
+        else if (req.IR_5 && !req.IR_1) res.state = "Fork/RightTurn";
+        else res.state = "StraightLine";
+    } else if (req.IR_2 && req.IR_3 && !req.IR_4) {
+        res.state = "RightSkew";
+    } else if (!req.IR_2 && req.IR_3 && req.IR_4) {
+        res.state = "LeftSkew";
+    } else if (!req.IR_3) {
+        res.state = "MissedLine";
     } else {
-        res.direction = "forward";
+        res.state = "ERR";
     }
 
-    ROS_INFO("sending back response - Direction: [%s]", res.direction.c_str());
+    ROS_INFO("sending back response - Direction: [%s]", res.state.c_str());
     return true;
 }
    
